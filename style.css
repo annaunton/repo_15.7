@@ -1,0 +1,32 @@
+body {
+ font-size: 26px;
+ color: #fff;
+}
+
+.controls, .stopwatch {
+	background: black;
+	margin: 10px auto; 
+	width: 215px; 
+	text-align: center; 
+}
+
+.controls {
+	background: black;
+}
+
+.stopwatch {
+	height: 50px;
+	line-height: 50px;
+	background: red;
+}
+
+.controls a {
+	color: #fff;
+	display: inline-block;
+	height: 50px; 
+	width: 100px;
+	line-height: 50px;
+	text-decoration: none;
+	border: 1px solid black;
+}
+
