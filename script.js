@@ -1,83 +1,103 @@
-class Stopwatch {
-    constructor(display) {
-        this.running = false;
-        this.display = display;
-        this.reset();
-        this.print(this.times);
-    }
+class Stopwatch extends React.Component {
 
-    reset() {
-    	this.times = {
-            minutes: 0,
-            seconds: 0,
+    constructor(props) {
+        super(props);
+        this.state = {
             miliseconds: 0
         };
     }
 
-    print() {
-        this.display.innerText = this.format(this.times);
-	}
 
-	format(times) {
-        return `${pad0(times.minutes)}:${pad0(times.seconds)}:${pad0(Math.floor(times.miliseconds))}`;
-	}
+    getMiliseconds() {
+        return ('0' + this.state.miliseconds % 100).slice(-2);
 
-	start() {
-    if (!this.running) {
-        	this.running = true;
-        	this.watch = setInterval(() => this.step(), 10);
-    	}
-	}
-
-	step() {
-    	if (!this.running) return;
-    		this.calculate();
-    		this.print();
-	}
-
-	calculate() {
-    	this.times.miliseconds += 1;
-    	if (this.times.miliseconds >= 100) {
-        	this.times.seconds += 1;
-        	this.times.miliseconds = 0;
-    	}
-    	if (this.times.seconds >= 60) {
-        	this.times.minutes += 1;
-        	this.times.seconds = 0;
-    	}
-	}
-
-	stop() {
-    	this.running = false;
-    	clearInterval(this.watch);
-	}
-
-	resetTime() {
-    		this.reset();
-    		this.print();
-	}
-
-
-
-}
-
-function pad0(value) {
-    let result = value.toString();
-    if (result.length < 2) {
-        result = '0' + result;
     }
-    return result;
+
+
+    getSeconds () {
+        if(this.state.miliseconds < 6000) {
+            return ('0' + Math.floor(this.state.miliseconds/100)).slice(-2);
+        } else { 
+            var length = this.state.miliseconds % 6000;
+            console.log(length);
+            if (length < 100 ) {
+                return ('00');
+            } else if (length >= 100 && length < 1000 ) {
+                return (('0' + length).slice(-4,-2));
+            } else {
+                return (('' + length).slice(-4,-2));
+            }
+
+        }
+
+    }
+
+    getMinutes() {
+        return Math.floor(this.state.miliseconds/6000);
+    }
+
+    handleStartClick() {
+        this.watch = setInterval(() => this.tick(), 10);
+    }
+
+    tick() {
+        this.setState({
+                miliseconds: (this.state.miliseconds +1),
+            });
+    }
+
+    handleStartClick() {
+        var self = this;
+        this.watch = setInterval(function() {
+            self.setState({
+                miliseconds: (self.state.miliseconds +1),
+            });
+        }, 10)
+    },
+
+    handleStopClick() {
+        clearInterval(this.watch);
+    }
+
+
+    render() {
+
+        var stylesControls = {
+            margin: '10px auto', 
+            width: '215px', 
+            textAlign: 'center',
+            height: '35px',
+            lineHeight: '35px',
+            background: 'black',
+            color: '#fff',
+            fontSize: '26px', 
+
+        };
+
+        var stylesStopwatch = {
+            margin: '10px auto', 
+            width: '215px', 
+            textAlign: 'center',
+            height: '35px',
+            lineHeight: '35px',
+            background: 'green',
+            color: '#fff',
+            fontSize: '26px', 
+
+        };
+
+        return (<div>
+                <div style={stylesStopwatch}>{this.getMinutes()} : {this.getSeconds()} : {this.getMiliseconds()}</div>
+                <div onClick={this.handleStartClick} style={stylesControls}>Start</div>
+                <div onClick={this.handleStopClick} style={stylesControls}>Stop</div>
+                <div>{this.state.miliseconds}</div>
+
+        </div>);
+        
+    }
+
 }
 
+ReactDOM.render(< Stopwatch/>, document.getElementById('app'));
 
-const stopwatch = new Stopwatch(
-document.querySelector('.stopwatch'));
 
-var startButton = document.getElementById('start');
-startButton.addEventListener('click', () => stopwatch.start());
-
-var stopButton = document.getElementById('stop');
-stopButton.addEventListener('click', () => stopwatch.stop());
-
-var resetButton = document.getElementById('reset');
-resetButton.addEventListener('click', () => stopwatch.resetTime());
