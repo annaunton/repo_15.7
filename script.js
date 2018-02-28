@@ -46,14 +46,14 @@ class Stopwatch extends React.Component {
             });
     }
 
-    handleStartClick() {
+    /*handleStartClick() {
         var self = this;
         this.watch = setInterval(function() {
             self.setState({
                 miliseconds: (self.state.miliseconds +1),
             });
         }, 10)
-    },
+    }*/
 
     handleStopClick() {
         clearInterval(this.watch);
