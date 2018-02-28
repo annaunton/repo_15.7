@@ -80,7 +80,7 @@ class Stopwatch extends React.Component {
             textAlign: 'center',
             height: '35px',
             lineHeight: '35px',
-            background: 'green',
+            background: 'red',
             color: '#fff',
             fontSize: '26px', 
 
@@ -88,9 +88,8 @@ class Stopwatch extends React.Component {
 
         return (<div>
                 <div style={stylesStopwatch}>{this.getMinutes()} : {this.getSeconds()} : {this.getMiliseconds()}</div>
-                <div onClick={this.handleStartClick} style={stylesControls}>Start</div>
-                <div onClick={this.handleStopClick} style={stylesControls}>Stop</div>
-                <div>{this.state.miliseconds}</div>
+                <div onClick={this.handleStartClick.bind(this)} style={stylesControls}>Start</div>
+                <div onClick={this.handleStopClick.bind(this)} style={stylesControls}>Stop</div>
 
         </div>);
         
